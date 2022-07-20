@@ -149,10 +149,16 @@ public class TownyChatListener implements Listener {
 
     private List<Resident> getNearbyResidents(Player player, int radius) {
         List<Resident> nearbyResidents = new ArrayList<Resident>();
-        Location playerLocation = player.getLocation();
+        int playerBlockX = player.getLocation().getBlockX();
+        int playerBlockZ = player.getLocation().getBlockZ();
+        int radiusSquared = radius * radius;
 
         for (Player nearbyPlayer : player.getWorld().getPlayers()) {
-            if (nearbyPlayer.getLocation().distance(playerLocation) <= radius) {
+            Location nearbyPlayerLocation = nearbyPlayer.getLocation();
+            int dx = Math.abs(nearbyPlayerLocation.getBlockX() - playerBlockX);
+            int dz = Math.abs(nearbyPlayerLocation.getBlockZ() - playerBlockZ);
+
+            if (dx * dx + dz * dz <= radiusSquared) {
                 nearbyResidents.add(townyAPI.getResident(nearbyPlayer));
             }
         }
