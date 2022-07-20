@@ -120,11 +120,6 @@ public class TownyChatListener implements Listener {
                 p -> !(chatPlayerManager.getChatPlayer(p).getActiveChannels()
                         .contains(currentChannel)));
 
-        if (currentChannel.getType() != ChannelTypes.LOCAL) {
-            recipients.removeIf(
-                    p -> chatPlayerManager.getChatPlayer(p).getCurrentChannel().getType() == ChannelTypes.LOCAL);
-        }
-
         event.viewers().addAll(recipients);
         event.viewers().add(Bukkit.getConsoleSender());
 
@@ -158,11 +153,7 @@ public class TownyChatListener implements Listener {
 
         for (Player nearbyPlayer : player.getWorld().getPlayers()) {
             if (nearbyPlayer.getLocation().distance(playerLocation) <= radius) {
-                ChatPlayer nearbyChatPlayer = chatPlayerManager.getChatPlayer(nearbyPlayer);
-
-                if (nearbyChatPlayer.getCurrentChannel().getType() == ChannelTypes.LOCAL) {
-                    nearbyResidents.add(townyAPI.getResident(nearbyPlayer));
-                }
+                nearbyResidents.add(townyAPI.getResident(nearbyPlayer));
             }
         }
 
