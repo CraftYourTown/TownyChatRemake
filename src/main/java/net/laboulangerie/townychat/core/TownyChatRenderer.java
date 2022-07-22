@@ -1,14 +1,5 @@
 package net.laboulangerie.townychat.core;
 
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import io.papermc.paper.chat.ChatRenderer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -18,11 +9,19 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.townychat.TownyChat;
 import net.laboulangerie.townychat.player.ChatPlayer;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class TownyChatRenderer implements ChatRenderer.ViewerUnaware {
-    private FileConfiguration config;
-    private ChatPlayerManager chatPlayerManager;
-    private ComponentRenderer componentRenderer;
+    private final FileConfiguration config;
+    private final ChatPlayerManager chatPlayerManager;
+    private final ComponentRenderer componentRenderer;
 
     public TownyChatRenderer() {
         this.config = TownyChat.PLUGIN.getConfig();
@@ -32,7 +31,7 @@ public class TownyChatRenderer implements ChatRenderer.ViewerUnaware {
 
     @Override
     public @NotNull Component render(@NotNull Player source, @NotNull Component sourceDisplayName,
-            @NotNull Component message) {
+                                     @NotNull Component message) {
 
         ChatPlayer chatPlayer = chatPlayerManager.getChatPlayer(source);
         String channelFormat = chatPlayer.getCurrentChannel().getFormat();
@@ -65,7 +64,7 @@ public class TownyChatRenderer implements ChatRenderer.ViewerUnaware {
 
     private String censorString(String string) {
         List<String> words = config.getStringList("blacklist");
-        String[] censorChars = { "#", "@", "!", "*" };
+        String[] censorChars = {"#", "@", "!", "*"};
 
         for (String word : words) {
             // Not readable to say the least but i like it

@@ -2,19 +2,17 @@ package net.laboulangerie.townychat.commands;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.object.Translatable;
-
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.laboulangerie.townychat.TownyChat;
+import net.laboulangerie.townychat.player.ChatPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.laboulangerie.townychat.TownyChat;
-import net.laboulangerie.townychat.player.ChatPlayer;
 
 public class SpyCommand implements CommandExecutor {
 
@@ -23,16 +21,14 @@ public class SpyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
-            @NotNull String[] args) {
+                             @NotNull String[] args) {
         FileConfiguration config = TownyChat.PLUGIN.getConfig();
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             String errorMessage = config.getString("lang.err_sender_not_player");
             sender.sendMessage(MiniMessage.miniMessage().deserialize(errorMessage));
             return true;
         }
-
-        Player player = (Player) sender;
 
         if (!(player.hasPermission("townychat.spy"))) {
             TownyMessaging.sendErrorMsg(sender, Translatable.of("msg_err_command_disable"));

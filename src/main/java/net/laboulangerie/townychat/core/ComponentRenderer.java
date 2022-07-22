@@ -1,11 +1,5 @@
 package net.laboulangerie.townychat.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -15,22 +9,23 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.laboulangerie.townychat.TownyChat;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComponentRenderer {
 
     public Component parse(OfflinePlayer player, String text) {
 
-        Component miniMessageParsed = getPapiMiniMessage(player).deserialize(text, parseTags(player));
-
-        return miniMessageParsed;
+        return getPapiMiniMessage(player).deserialize(text, parseTags(player));
     }
 
     public Component parse(OfflinePlayer player, String text, TagResolver additionnalResolver) {
         TagResolver tagResolver = TagResolver.resolver(parseTags(player), additionnalResolver);
 
-        Component miniMessageParsed = getPapiMiniMessage(player).deserialize(text, tagResolver);
-
-        return miniMessageParsed;
+        return getPapiMiniMessage(player).deserialize(text, tagResolver);
     }
 
     private TagResolver parseTags(OfflinePlayer player) {
@@ -51,10 +46,10 @@ public class ComponentRenderer {
     public MiniMessage getPapiMiniMessage(OfflinePlayer player) {
 
         return MiniMessage.builder().tags(
-                TagResolver.builder()
-                        .resolver(StandardTags.defaults())
-                        .resolver(papiTagResolver(player))
-                        .build())
+                        TagResolver.builder()
+                                .resolver(StandardTags.defaults())
+                                .resolver(papiTagResolver(player))
+                                .build())
                 .build();
     }
 

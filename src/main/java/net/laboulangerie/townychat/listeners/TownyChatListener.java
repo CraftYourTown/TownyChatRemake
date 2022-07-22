@@ -1,27 +1,11 @@
 package net.laboulangerie.townychat.listeners;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextComponent;
@@ -34,11 +18,21 @@ import net.laboulangerie.townychat.core.TownyChatRenderer;
 import net.laboulangerie.townychat.events.AsyncChatHookEvent;
 import net.laboulangerie.townychat.player.ChatPlayer;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TownyChatListener implements Listener {
-    private ChatPlayerManager chatPlayerManager;
-    private TownyChatRenderer townyChatRenderer;
-    private TownyAPI townyAPI;
+    private final ChatPlayerManager chatPlayerManager;
+    private final TownyChatRenderer townyChatRenderer;
+    private final TownyAPI townyAPI;
 
     public TownyChatListener() {
         this.chatPlayerManager = TownyChat.PLUGIN.getChatPlayerManager();
@@ -82,32 +76,23 @@ public class TownyChatListener implements Listener {
         Set<Resident> residents = new HashSet<>();
 
         switch (currentChannel.getType()) {
-            case TOWN:
+            case TOWN -> {
                 Town town = resident.getTownOrNull();
-
                 if (town == null)
                     return;
-
                 residents.addAll(town.getResidents());
-                break;
-
-            case NATION:
+            }
+            case NATION -> {
                 Nation nation = resident.getNationOrNull();
-
                 if (nation == null)
                     return;
-
                 residents.addAll(nation.getResidents());
-                break;
-
-            case LOCAL:
+            }
+            case LOCAL -> {
                 int radius = TownyChat.PLUGIN.getConfig().getInt("channels.local.radius");
                 residents.addAll(getNearbyResidents(player, radius));
-                break;
-
-            case GLOBAL:
-                residents.addAll(TownyUniverse.getInstance().getResidents());
-                break;
+            }
+            case GLOBAL -> residents.addAll(TownyUniverse.getInstance().getResidents());
         }
 
         Set<Player> recipients = residents.stream().map(Resident::getPlayer)

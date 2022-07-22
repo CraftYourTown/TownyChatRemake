@@ -1,21 +1,20 @@
 package net.laboulangerie.townychat.channels;
 
+import com.palmergames.bukkit.towny.object.Government;
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Town;
+import net.laboulangerie.townychat.TownyChat;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.palmergames.bukkit.towny.object.Government;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Town;
-
-import net.laboulangerie.townychat.TownyChat;
-
 public class ChannelManager {
 
-    private Map<Government, Channel> channelsMap;
+    private final Map<Government, Channel> channelsMap;
 
     public ChannelManager() {
-        this.channelsMap = new HashMap<Government, Channel>();
+        this.channelsMap = new HashMap<>();
         loadChannels();
     }
 

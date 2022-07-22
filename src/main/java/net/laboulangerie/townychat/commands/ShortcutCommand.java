@@ -1,22 +1,20 @@
 package net.laboulangerie.townychat.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import com.palmergames.bukkit.towny.TownyMessaging;
-
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.laboulangerie.townychat.TownyChat;
 import net.laboulangerie.townychat.channels.ChannelTypes;
 import net.laboulangerie.townychat.player.ChatPlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class ShortcutCommand implements CommandExecutor {
-    private ChannelTypes channelType;
+    private final ChannelTypes channelType;
 
     public ShortcutCommand(ChannelTypes channelType) {
         this.channelType = channelType;
@@ -24,14 +22,12 @@ public class ShortcutCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
-            @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+                             @NotNull String[] args) {
+        if (!(sender instanceof Player player)) {
             String errorMessage = TownyChat.PLUGIN.getConfig().getString("lang.err_sender_not_player");
             sender.sendMessage(MiniMessage.miniMessage().deserialize(errorMessage));
             return true;
         }
-
-        Player player = (Player) sender;
 
         if (args.length == 0) {
             String errMessage = TownyChat.PLUGIN.getConfig().getString("lang.err_no_message");
@@ -47,7 +43,7 @@ public class ShortcutCommand implements CommandExecutor {
 
         ChatPlayer chatPlayer = TownyChat.PLUGIN.getChatPlayerManager().getChatPlayer(player);
 
-        if (chatPlayer.getChannels().keySet().contains(this.channelType)) {
+        if (chatPlayer.getChannels().containsKey(this.channelType)) {
             ChannelTypes previousChannelType = chatPlayer.getCurrentChannel().getType();
             chatPlayer.setCurrentChannel(this.channelType);
             player.chat(message);

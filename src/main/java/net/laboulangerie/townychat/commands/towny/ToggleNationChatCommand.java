@@ -1,14 +1,6 @@
 package net.laboulangerie.townychat.commands.towny;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -17,15 +9,21 @@ import net.laboulangerie.townychat.channels.Channel;
 import net.laboulangerie.townychat.channels.ChannelTypes;
 import net.laboulangerie.townychat.player.ChatPlayer;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class ToggleNationChatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
-            @NotNull String[] args) {
+                             @NotNull String[] args) {
         FileConfiguration config = TownyChat.PLUGIN.getConfig();
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             String errorMessage = config.getString("lang.sender_not_player");
             sender.sendMessage(MiniMessage.miniMessage().deserialize(errorMessage));
             return true;
@@ -33,7 +31,6 @@ public class ToggleNationChatCommand implements CommandExecutor {
 
         ChatPlayerManager chatPlayerManager = TownyChat.PLUGIN.getChatPlayerManager();
 
-        Player player = (Player) sender;
         ChatPlayer chatPlayer = chatPlayerManager.getChatPlayer(player);
 
         boolean isEnabled = chatPlayer.toggleChannel(ChannelTypes.NATION);

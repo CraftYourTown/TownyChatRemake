@@ -1,12 +1,13 @@
 package net.laboulangerie.townychat.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.palmergames.bukkit.towny.TownyMessaging;
-
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.laboulangerie.townychat.TownyChat;
+import net.laboulangerie.townychat.channels.Channel;
+import net.laboulangerie.townychat.channels.ChannelTypes;
+import net.laboulangerie.townychat.player.ChatPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,20 +16,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.laboulangerie.townychat.TownyChat;
-import net.laboulangerie.townychat.channels.Channel;
-import net.laboulangerie.townychat.channels.ChannelTypes;
-import net.laboulangerie.townychat.player.ChatPlayer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ChatCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias,
-            @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+                             @NotNull String[] args) {
+        if (!(sender instanceof Player player)) {
             String errorMessage = TownyChat.PLUGIN.getConfig().getString("lang.err_sender_not_player");
             sender.sendMessage(MiniMessage.miniMessage().deserialize(errorMessage));
             return true;
@@ -37,7 +35,6 @@ public class ChatCommands implements CommandExecutor, TabCompleter {
         if (args.length == 0)
             return false;
 
-        Player player = (Player) sender;
         ChatPlayer chatPlayer = TownyChat.PLUGIN.getChatPlayerManager().getChatPlayer(player);
         Set<String> channels = chatPlayer.getChannels().values().stream()
                 .map(c -> c.getType().name().toLowerCase())
@@ -87,22 +84,19 @@ public class ChatCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
-            @NotNull String alias, @NotNull String[] args) {
+                                                @NotNull String alias, @NotNull String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return null;
         }
 
-        Player player = (Player) sender;
         ChatPlayer chatPlayer = TownyChat.PLUGIN.getChatPlayerManager().getChatPlayer(player);
 
-        List<String> channelTypes = new ArrayList<String>(
-                chatPlayer.getChannels().keySet().stream().map(c -> c.name().toLowerCase())
-                        .collect(Collectors.toList()));
+        List<String> channelTypes = chatPlayer.getChannels().keySet().stream().map(c -> c.name().toLowerCase()).collect(Collectors.toList());
 
         return args.length == 1
                 ? channelTypes.stream().filter(id -> id.toLowerCase().startsWith(args[0].toLowerCase()))
-                        .collect(Collectors.toList())
+                .collect(Collectors.toList())
                 : channelTypes;
     }
 }

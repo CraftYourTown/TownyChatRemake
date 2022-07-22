@@ -1,12 +1,5 @@
 package net.laboulangerie.townychat.listeners;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
-
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.Component;
 import github.scarsz.discordsrv.hooks.chat.ChatHook;
@@ -19,11 +12,17 @@ import net.laboulangerie.townychat.channels.ChannelManager;
 import net.laboulangerie.townychat.events.AsyncChatHookEvent;
 import net.laboulangerie.townychat.player.ChatPlayer;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.Plugin;
 
 public class DiscordHook implements ChatHook {
 
-    private ChannelManager channelManager;
-    private ChatPlayerManager chatPlayerManager;
+    private final ChannelManager channelManager;
+    private final ChatPlayerManager chatPlayerManager;
 
     public DiscordHook() {
         this.channelManager = TownyChat.PLUGIN.getChannelManager();

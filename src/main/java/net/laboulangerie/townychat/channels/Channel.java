@@ -1,16 +1,15 @@
 package net.laboulangerie.townychat.channels;
 
-import java.util.List;
-
 import com.palmergames.bukkit.towny.object.Government;
-
 import net.laboulangerie.townychat.TownyChat;
+
+import java.util.List;
 
 public class Channel {
 
-    private String id;
-    private ChannelTypes type;
-    private Government government;
+    private final String id;
+    private final ChannelTypes type;
+    private final Government government;
 
     public Channel(ChannelTypes type, Government government) {
         this.type = type;

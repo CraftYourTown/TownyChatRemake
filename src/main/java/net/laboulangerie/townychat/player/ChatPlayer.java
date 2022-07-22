@@ -1,31 +1,25 @@
 package net.laboulangerie.townychat.player;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
-
-import org.bukkit.OfflinePlayer;
-
 import net.laboulangerie.townychat.TownyChat;
 import net.laboulangerie.townychat.channels.Channel;
 import net.laboulangerie.townychat.channels.ChannelManager;
 import net.laboulangerie.townychat.channels.ChannelTypes;
+import org.bukkit.OfflinePlayer;
+
+import java.util.*;
 
 public class ChatPlayer {
-    private UUID uniqueId;
+    private final UUID uniqueId;
 
-    private ChannelManager channelManager;
+    private final ChannelManager channelManager;
 
     private Channel currentChannel;
-    private Map<ChannelTypes, Channel> channels;
-    private Set<Channel> activeChannels;
+    private final Map<ChannelTypes, Channel> channels;
+    private final Set<Channel> activeChannels;
 
     private boolean isSpying;
 
@@ -34,8 +28,8 @@ public class ChatPlayer {
 
         this.channelManager = TownyChat.PLUGIN.getChannelManager();
 
-        this.channels = new HashMap<ChannelTypes, Channel>();
-        this.activeChannels = new HashSet<Channel>();
+        this.channels = new HashMap<>();
+        this.activeChannels = new HashSet<>();
 
         this.isSpying = false;
 
@@ -46,12 +40,12 @@ public class ChatPlayer {
         return this.uniqueId;
     }
 
-    public void setCurrentChannel(ChannelTypes channelType) {
-        this.currentChannel = this.channels.get(channelType);
-    }
-
     public Channel getCurrentChannel() {
         return this.currentChannel;
+    }
+
+    public void setCurrentChannel(ChannelTypes channelType) {
+        this.currentChannel = this.channels.get(channelType);
     }
 
     public Channel getChannel(ChannelTypes channelType) {

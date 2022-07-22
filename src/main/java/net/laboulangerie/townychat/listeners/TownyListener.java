@@ -1,31 +1,24 @@
 package net.laboulangerie.townychat.listeners;
 
-import com.palmergames.bukkit.towny.event.NewNationEvent;
-import com.palmergames.bukkit.towny.event.NewTownEvent;
-import com.palmergames.bukkit.towny.event.PreDeleteNationEvent;
-import com.palmergames.bukkit.towny.event.PreDeleteTownEvent;
-import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
-import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
+import com.palmergames.bukkit.towny.event.*;
 import com.palmergames.bukkit.towny.event.nation.NationPreTownLeaveEvent;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-
 import net.laboulangerie.townychat.TownyChat;
 import net.laboulangerie.townychat.channels.Channel;
 import net.laboulangerie.townychat.channels.ChannelManager;
 import net.laboulangerie.townychat.channels.ChannelTypes;
 import net.laboulangerie.townychat.player.ChatPlayer;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 public class TownyListener implements Listener {
-    private ChannelManager channelManager;
-    private ChatPlayerManager chatPlayerManager;
+    private final ChannelManager channelManager;
+    private final ChatPlayerManager chatPlayerManager;
 
     public TownyListener() {
         this.chatPlayerManager = TownyChat.PLUGIN.getChatPlayerManager();

@@ -1,22 +1,9 @@
 package net.laboulangerie.townychat;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI;
-import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI.CommandType;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
+import com.palmergames.bukkit.towny.TownyUniverse;
 import github.scarsz.discordsrv.DiscordSRV;
 import net.laboulangerie.townychat.channels.Channel;
 import net.laboulangerie.townychat.channels.ChannelManager;
@@ -30,10 +17,20 @@ import net.laboulangerie.townychat.commands.towny.ToggleTownChatCommand;
 import net.laboulangerie.townychat.core.ComponentRenderer;
 import net.laboulangerie.townychat.core.TownyChatRenderer;
 import net.laboulangerie.townychat.listeners.DiscordHook;
-import net.laboulangerie.townychat.listeners.MiscListener;
 import net.laboulangerie.townychat.listeners.TownyChatListener;
 import net.laboulangerie.townychat.listeners.TownyListener;
 import net.laboulangerie.townychat.player.ChatPlayerManager;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TownyChat extends JavaPlugin {
     public static TownyChat PLUGIN;
@@ -83,7 +80,6 @@ public class TownyChat extends JavaPlugin {
 
         this.listeners = new ArrayList<>(Arrays.asList(
                 new TownyChatListener(),
-                new MiscListener(),
                 new TownyListener()));
 
         // Is DiscordSRV enabled? It's a softdepend

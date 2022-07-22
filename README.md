@@ -1,6 +1,7 @@
 # 💬 TownyChatRemake ✨
 
-**TownyChatRemake** is a simple yet fully customizable chat plugin that syncs with [Towny](https://github.com/TownyAdvanced/Towny).
+**TownyChatRemake** is a simple yet fully customizable chat plugin that syncs
+with [Towny](https://github.com/TownyAdvanced/Towny).
 
 ## 👀 Preview
 
@@ -8,11 +9,11 @@
 
 ## ✨ Features
 
--   Towns and nations specific channels
--   Fully customizable and easy-to-use configuration for server owners
--   User-friendly shortcut commands
--   Spy mode
--   [DiscordSRV](https://discordsrv.com/) support
+- Towns and nations specific channels
+- Fully customizable and easy-to-use configuration for server owners
+- User-friendly shortcut commands
+- Spy mode
+- [DiscordSRV](https://discordsrv.com/) support
 
 ## 🛠 Usage
 
@@ -22,29 +23,31 @@ This is because it uses the [Adventure library](https://github.com/KyoriPowered/
 
 ### Commands
 
--   `/chat <channel>` - Switch between channels, e.g. `/chat town`
--   `/town toggle chat` - Toggle town chat
--   `/nation toggle chat` - Toggle nation chat
--   `/gc` `/tc` `/nc` - Channel shortcut commands, e.g. `/tc hi town!`, can be modified in the config.
--   `/ta reload chat` - Reload config
+- `/chat <channel>` - Switch between channels, e.g. `/chat town`
+- `/town toggle chat` - Toggle town chat
+- `/nation toggle chat` - Toggle nation chat
+- `/gc` `/tc` `/nc` - Channel shortcut commands, e.g. `/tc hi town!`, can be modified in the config.
+- `/ta reload chat` - Reload config
 
 ### Permissions
 
--   `townychat.chat` - Default permission to switch channels
--   `townychat.spy` - Toggle spy mode, it allows you to receive messages from all the channels
--   `townychat.format` - Chat formatting with the [MiniMessage Format](https://docs.adventure.kyori.net/minimessage/format.html)
+- `townychat.chat` - Default permission to switch channels
+- `townychat.spy` - Toggle spy mode, it allows you to receive messages from all the channels
+- `townychat.format` - Chat formatting with
+  the [MiniMessage Format](https://docs.adventure.kyori.net/minimessage/format.html)
 
 ### Config
 
 Everything should be explained in the config.yml file, but here are some reminders:
 
--   The `tags`' config section is made so that you can add components easily in other config strings.
--   You can use PAPI placeholders in every config strings except in the `lang` section like so: `<papi:YOUR_PLACEHOLDER_NAME>` (e.g `<papi:townyadvanced_town_tag>`)
--   Useful links:
-    -   [MiniMessages format](https://docs.adventure.kyori.net/minimessage#format)
-    -   [MiniMessages viewer](https://webui.adventure.kyori.net/)
-    -   [Every PAPI placeholders](https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders)
-    -   [Towny placeholders](https://github.com/TownyAdvanced/Towny/wiki/Placeholders)
+- The `tags`' config section is made so that you can add components easily in other config strings.
+- You can use PAPI placeholders in every config strings except in the `lang` section like
+  so: `<papi:YOUR_PLACEHOLDER_NAME>` (e.g `<papi:townyadvanced_town_tag>`)
+- Useful links:
+    - [MiniMessages format](https://docs.adventure.kyori.net/minimessage#format)
+    - [MiniMessages viewer](https://webui.adventure.kyori.net/)
+    - [Every PAPI placeholders](https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders)
+    - [Towny placeholders](https://github.com/TownyAdvanced/Towny/wiki/Placeholders)
 
 ### ⚙️ Recommended Towny Settings
 
@@ -72,7 +75,8 @@ By priority:
     -   [ ] `townychat.format.`
         -   [ ] `colors` - Use the colors in message (e.g aqua or #00FF00)
         -   [ ] `decorations` - Use decoration in message (italic, bold, underline, strikethrough, obfuscated)
-        -   [ ] `misc` - Use every other MiniMessage features in message (click, hover, keybind, translatable, insertion, rainbow, gradient, transition, font, newline)
+        -   [ ] `misc` - Use every other MiniMessage features in message (click, hover, keybind, translatable,
+            insertion, rainbow, gradient, transition, font, newline)
 
 -   [ ] Switch channels quickly with /tc /nc /gc...
 -   [ ] Cooldown

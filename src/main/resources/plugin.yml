@@ -2,30 +2,30 @@ name: TownyChatRemake
 version: ${project.version}
 main: net.laboulangerie.townychat.TownyChat
 api-version: 1.19
-authors: [PainOchoco]
-depend: [Towny, PlaceholderAPI]
-softdepend: [DiscordSRV]
+authors: [ PainOchoco ]
+depend: [ Towny, PlaceholderAPI ]
+softdepend: [ DiscordSRV ]
 commands:
-    chat:
-        permission: townychat.switch
-        description: Switch between channels
-        usage: /chat <channel>
-    spy:
-        permission: townychat.spy
-        description: Spy on every town and nations channels
-        usage: /spy
+  chat:
+    permission: townychat.switch
+    description: Switch between channels
+    usage: /chat <channel>
+  spy:
+    permission: townychat.spy
+    description: Spy on every town and nations channels
+    usage: /spy
 
 permissions:
-    townychat.switch:
-        default: true
-    townychat.spy:
-        default: op
-    townychat.format:
-        default: op
+  townychat.switch:
+    default: true
+  townychat.spy:
+    default: op
+  townychat.format:
+    default: op
 
-    townychat.*:
-        default: op
-        children:
-            townychat.switch: true
-            townychat.spy: true
-            townychat.format: true
+  townychat.*:
+    default: op
+    children:
+      townychat.switch: true
+      townychat.spy: true
+      townychat.format: true

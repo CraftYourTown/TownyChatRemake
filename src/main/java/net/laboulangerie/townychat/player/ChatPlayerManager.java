@@ -1,21 +1,21 @@
 package net.laboulangerie.townychat.player;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 public class ChatPlayerManager {
-    private Map<UUID, ChatPlayer> playersMap;
+    private final Map<UUID, ChatPlayer> playersMap;
 
     public ChatPlayerManager() {
         this.playersMap = new HashMap<>();
 
-        Bukkit.getOnlinePlayers().stream().forEach(p -> loadChatPlayer(p));
+        Bukkit.getOnlinePlayers().forEach(this::loadChatPlayer);
     }
 
     public void loadChatPlayer(Player player) {
