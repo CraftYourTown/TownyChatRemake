@@ -8,6 +8,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -105,8 +106,9 @@ public class TownyChatListener implements Listener {
                 p -> !(chatPlayerManager.getChatPlayer(p).getActiveChannels()
                         .contains(currentChannel)));
 
-        event.viewers().addAll(recipients);
-        event.viewers().add(Bukkit.getConsoleSender());
+        Component message = townyChatRenderer.render(player, player.displayName(), event.originalMessage());
+        recipients.forEach(it -> it.sendMessage(message));
+        Bukkit.getConsoleSender().sendMessage(message);
 
         AsyncChatHookEvent hookEvent = new AsyncChatHookEvent(event, currentChannel, !Bukkit.isPrimaryThread());
         Bukkit.getPluginManager().callEvent(hookEvent);
