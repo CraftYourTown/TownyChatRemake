@@ -29,19 +29,21 @@ public class ShortcutCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) {
-            String errMessage = TownyChat.PLUGIN.getConfig().getString("lang.err_no_message");
+        ChatPlayer chatPlayer = TownyChat.PLUGIN.getChatPlayerManager().getChatPlayer(player);
 
-            TextComponent noMessageComponent = (TextComponent) MiniMessage.miniMessage().deserialize(errMessage,
-                    Placeholder.unparsed("channel", command.getName()));
+        if (args.length == 0 && chatPlayer.getChannel(channelType) != null) {
 
-            TownyMessaging.sendErrorMsg(player, noMessageComponent.content());
-            return false;
+            chatPlayer.setCurrentChannel(channelType);
+            String switchMessage = TownyChat.PLUGIN.getConfig().getString("lang.channel_switched");
+            TextComponent switchMessageComponent = (TextComponent) MiniMessage.miniMessage().deserialize(switchMessage,
+                    Placeholder.unparsed("channel", channelType.name()));
+            sender.sendMessage("\n");
+            TownyMessaging.sendMsg(sender, switchMessageComponent.content());
+            sender.sendMessage("\n");
+            return true;
         }
 
         String message = String.join(" ", args);
-
-        ChatPlayer chatPlayer = TownyChat.PLUGIN.getChatPlayerManager().getChatPlayer(player);
 
         if (chatPlayer.getChannels().containsKey(this.channelType)) {
             ChannelTypes previousChannelType = chatPlayer.getCurrentChannel().getType();
