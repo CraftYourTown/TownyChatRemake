@@ -3,7 +3,7 @@ version: ${project.version}
 main: net.laboulangerie.townychat.TownyChat
 api-version: 1.19
 authors: [ PainOchoco ]
-depend: [ Towny, PlaceholderAPI ]
+depend: [ Towny, PlaceholderAPI, Essentials ]
 softdepend: [ DiscordSRV ]
 commands:
   chat:

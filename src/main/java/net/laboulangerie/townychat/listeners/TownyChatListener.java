@@ -1,5 +1,6 @@
 package net.laboulangerie.townychat.listeners;
 
+import com.earth2me.essentials.Essentials;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
@@ -34,11 +35,13 @@ public class TownyChatListener implements Listener {
     private final ChatPlayerManager chatPlayerManager;
     private final TownyChatRenderer townyChatRenderer;
     private final TownyAPI townyAPI;
+    private final Essentials essentials;
 
     public TownyChatListener() {
         this.chatPlayerManager = TownyChat.PLUGIN.getChatPlayerManager();
         this.townyChatRenderer = TownyChat.PLUGIN.getTownyChatRenderer();
         this.townyAPI = TownyChat.PLUGIN.getTownyAPI();
+        this.essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -101,9 +104,10 @@ public class TownyChatListener implements Listener {
                 .collect(Collectors.toSet());
 
         // Removes players that disabled this channel
-        recipients.removeIf(
-                p -> !(chatPlayerManager.getChatPlayer(p).getActiveChannels()
-                        .contains(currentChannel)));
+        recipients.removeIf(p ->
+                !(chatPlayerManager.getChatPlayer(p).getActiveChannels().contains(currentChannel))
+                || essentials.getUser(p).isIgnoredPlayer(essentials.getUser(player))
+        );
 
         Component message = townyChatRenderer.render(player, player.displayName(), event.originalMessage());
         recipients.forEach(it -> it.sendMessage(message));

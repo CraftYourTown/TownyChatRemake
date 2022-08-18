@@ -82,6 +82,11 @@
             <id>Scarsz-Nexus</id>
             <url>https://nexus.scarsz.me/content/groups/public/</url>
         </repository>
+        <!-- Essentials -->
+        <repository>
+            <id>essentials</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -113,6 +118,12 @@
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
             <version>1.25.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.19.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
