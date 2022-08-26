@@ -67,9 +67,7 @@ public class ChatCommands implements CommandExecutor, TabCompleter {
             TextComponent switchMessageComponent = (TextComponent) MiniMessage.miniMessage().deserialize(switchMessage,
                     Placeholder.unparsed("channel", channel.getName()));
 
-            sender.sendMessage("\n");
             TownyMessaging.sendMsg(sender, switchMessageComponent.content());
-            sender.sendMessage("\n");
 
             return true;
         }

@@ -37,9 +37,7 @@ public class ShortcutCommand implements CommandExecutor {
             String switchMessage = TownyChat.PLUGIN.getConfig().getString("lang.channel_switched");
             TextComponent switchMessageComponent = (TextComponent) MiniMessage.miniMessage().deserialize(switchMessage,
                     Placeholder.unparsed("channel", channelType.name()));
-            sender.sendMessage("\n");
             TownyMessaging.sendMsg(sender, switchMessageComponent.content());
-            sender.sendMessage("\n");
             return true;
         }
 
