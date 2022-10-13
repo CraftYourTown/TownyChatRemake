@@ -1,95 +1,87 @@
 package net.laboulangerie.townychat.listeners;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.dependencies.kyori.adventure.text.Component;
-import github.scarsz.discordsrv.hooks.chat.ChatHook;
-import github.scarsz.discordsrv.util.LangUtil;
-import github.scarsz.discordsrv.util.MessageUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.townychat.TownyChat;
-import net.laboulangerie.townychat.channels.Channel;
-import net.laboulangerie.townychat.channels.ChannelManager;
+import net.laboulangerie.townychat.channels.ChannelTypes;
 import net.laboulangerie.townychat.events.AsyncChatHookEvent;
-import net.laboulangerie.townychat.player.ChatPlayer;
-import net.laboulangerie.townychat.player.ChatPlayerManager;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class DiscordHook implements ChatHook {
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.concurrent.Executors;
 
-    private final ChannelManager channelManager;
-    private final ChatPlayerManager chatPlayerManager;
+public class DiscordHook implements Listener {
 
-    public DiscordHook() {
-        this.channelManager = TownyChat.PLUGIN.getChannelManager();
-        this.chatPlayerManager = TownyChat.PLUGIN.getChatPlayerManager();
-    }
+    private final PlainTextComponentSerializer plainText = PlainTextComponentSerializer.plainText();
+    private final URI uri = URI.create(TownyChat.PLUGIN.getConfig().getString("webhook-url"));
+    private final HttpClient httpClient = HttpClient.newBuilder()
+            .executor(Executors.newSingleThreadExecutor())
+            .build();
+    private final String chat =
+            """
+            {
+                "content": "<content>"
+            }
+            """;
+    private final String session =
+            """
+            {
+              "embeds": [{
+                "author": {
+                  "name": "<who> <what> the server",
+                  "icon_url": "https://crafatar.com/avatars/<uuid>?overlay"
+                }
+              }]
+            }
+            """;
 
-    // From Minecraft to Discord
     @EventHandler(priority = EventPriority.MONITOR)
     public void onMessage(AsyncChatHookEvent event) {
-        // make sure chat channel is registered with a destination
-        if (DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(event.getChannel().getId()) == null) {
-            DiscordSRV.debug("Tried looking up destination Discord channel for Towny channel "
-                    + event.getChannel().getName() + " but none found");
-            return;
-        }
-
-        String messageString = MessageUtil
-                .stripMiniTokens(PlainTextComponentSerializer.plainText().serialize(event.getMessage()));
-
-        // make sure message isn't blank
-        if (StringUtils.isBlank(messageString)) {
-            DiscordSRV.debug("Received blank TownyChatRemake message, not processing");
-            return;
-        }
-
-        DiscordSRV.getPlugin().processChatMessage(event.getPlayer(), messageString, event.getChannel().getId(),
-                event.isCancelled());
-    }
-
-    // From Discord to Minecraft
-    @Override
-    public void broadcastMessageToChannel(String channelId, Component message) {
-
-        // get the destination channel
-        Channel destinationChannel = null;
-
-        for (Channel channel : channelManager.getChannels().values()) {
-            if (channel.getId().equals(channelId)) {
-                destinationChannel = channel;
-                break;
-            }
-        }
-
-        // return if channel was not available
-        if (destinationChannel == null)
-            return;
-
-        String messageString = MessageUtil.toLegacy(message);
-
-        String plainMessage = LangUtil.Message.CHAT_CHANNEL_MESSAGE.toString()
-                .replace("%channelcolor%", "")
-                .replace("%channelname%", destinationChannel.getName())
-                .replace("%channelnickname%", destinationChannel.getName())
-                .replace("%message%", messageString);
-
-        for (ChatPlayer chatPlayer : chatPlayerManager.getChatPlayers().values()) {
-
-            if (chatPlayer.getActiveChannels().contains(destinationChannel)) {
-                Player player = Bukkit.getPlayer(chatPlayer.getUniqueId());
-                player.sendMessage(plainMessage);
-            }
+        if (event.getChannel().getType() == ChannelTypes.GLOBAL) {
+            send(
+                    chat,
+                    "<content>", "**" + event.getPlayer().getName() + "** » " + plainText.serialize(event.getMessage())
+            );
         }
     }
 
-    @Override
-    public Plugin getPlugin() {
-        return TownyChat.PLUGIN;
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        send(
+                session,
+                "<who>", event.getPlayer().getName(),
+                "<what>", "joined",
+                "<uuid>", event.getPlayer().getUniqueId().toString()
+        );
     }
 
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event) {
+        send(
+                session,
+                "<who>", event.getPlayer().getName(),
+                "<what>", "left",
+                "<uuid>", event.getPlayer().getUniqueId().toString()
+        );
+    }
+
+    private void send(String json, String... replacements) {
+        for (int i = 0; i < replacements.length; i += 2) {
+            json = json.replace(replacements[i], replacements[i + 1]);
+        }
+        httpClient.sendAsync(
+                HttpRequest.newBuilder()
+                        .header("Content-Type", "application/json")
+                        .uri(uri)
+                        .POST(HttpRequest.BodyPublishers.ofString(json))
+                        .build(),
+                HttpResponse.BodyHandlers.discarding()
+        );
+    }
 }

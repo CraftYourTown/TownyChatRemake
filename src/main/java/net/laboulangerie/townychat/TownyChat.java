@@ -4,7 +4,6 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI.CommandType;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import github.scarsz.discordsrv.DiscordSRV;
 import net.laboulangerie.townychat.channels.Channel;
 import net.laboulangerie.townychat.channels.ChannelManager;
 import net.laboulangerie.townychat.channels.ChannelTypes;
@@ -80,19 +79,11 @@ public class TownyChat extends JavaPlugin {
 
         this.listeners = new ArrayList<>(Arrays.asList(
                 new TownyChatListener(),
-                new TownyListener()));
+                new TownyListener(),
+                new DiscordHook()
+        ));
 
-        // Is DiscordSRV enabled? It's a softdepend
-        if (getServer().getPluginManager().getPlugin("DiscordSRV") != null) {
-            DiscordHook discordHook = new DiscordHook();
-
-            this.listeners.add(discordHook);
-            this.registerListeners();
-            DiscordSRV.getPlugin().getPluginHooks().add(discordHook);
-            getLogger().info("Hooked to DiscordSRV!");
-        } else {
-            this.registerListeners();
-        }
+        this.registerListeners();
 
         getLogger().info("Plugin started");
     }
