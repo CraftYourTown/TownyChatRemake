@@ -81,3 +81,5 @@ misc:
     challenge: "<dark_purple>✽ <username> has made the advancement <bold><hover:show_text:'<dark_purple><advancement_description>'><advancement_title>"
     goal: "<gold>✸ <username> has made the advancement <bold><hover:show_text:'<gold><advancement_description>'><advancement_title>"
     task: "<yellow>✦ <username> has made the advancement <bold><hover:show_text:'<yellow><advancement_description>'><advancement_title>"
+
+webhook-url: "https://discord.com/api/webhooks/"
