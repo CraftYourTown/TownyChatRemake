@@ -46,7 +46,7 @@ public class DiscordHook implements Listener {
         if (event.getChannel().getType() == ChannelTypes.GLOBAL) {
             send(
                     chat,
-                    "<content>", "**" + event.getPlayer().getName() + "** » " + plainText.serialize(event.getMessage())
+                    "<content>", "**" + event.getPlayer().getName() + "** » " + plainText.serialize(event.getMessage()).replace('@', ' ')
             );
         }
     }
